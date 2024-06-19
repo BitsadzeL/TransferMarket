@@ -78,6 +78,29 @@ module.exports = {
     },
 
 
+    getAllFootballersWithStatistics: async (req, res) => {
+        try {
+            const pipeline = [
+                {
+                    $lookup: {
+                        from: 'statistics', // Name of the statistics collection
+                        localField: '_id', // Field from footballers collection
+                        foreignField: 'playerId', // Field from statistics collection
+                        as: 'statistics' // Array field to store matched statistics
+                    }
+                }
+            ];
+
+            const footballersWithStatistics = await footballerModel.aggregate(pipeline);
+
+            res.json(footballersWithStatistics);
+        } catch (error) {
+            console.error('Error retrieving footballers with statistics:', error);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+
+
 
 
     // update: async (req, res) => {
