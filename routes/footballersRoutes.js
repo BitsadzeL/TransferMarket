@@ -2,16 +2,19 @@ const express = require('express');
 const router = express.Router();
 
 const footballerService = require('../services/footballersService');
+const security=require('../middleware/apiSecurity');
 
 
-router.post('/add', footballerService.add);
-router.get('/getAll', footballerService.getAll);
-router.get('/findByName/:nameToFind', footballerService.findByName);
-router.delete('/delete/:id', footballerService.delete);
-router.get('/findByNationality/:nationalityToFind', footballerService.findByNationality);
-router.get('/findByPosition/:positionToFind', footballerService.findByPosition);
-router.get('/withStatistics', footballerService.getAllFootballersWithStatistics);
+router.post('/addFootballer', security.requireLogin,security.requireAdminRole,footballerService.add);
+router.delete('/deleteFootballer/:id',security.requireLogin,security.requireAdminRole, footballerService.delete);
+router.put('/updateFootballerInfo/:id', security.requireLogin,security.requireAdminRole,footballerService.update);
 
-//router.put('/:id', studentService.update);
+router.get('/getAllFootballersInfo',security.requireLogin, footballerService.getAll);
+router.get('/findByNationality/:nationalityToFind',security.requireLogin, footballerService.findByNationality);
+router.get('/findByPosition/:positionToFind',security.requireLogin, footballerService.findByPosition);
+router.get('/GetAllFootballersFullInfo',security.requireLogin, footballerService.getAllFootballersWithStatistics);
+router.get('/findFootballerById/:id',security.requireLogin,footballerService.findById);
+
+
 
 module.exports = router;

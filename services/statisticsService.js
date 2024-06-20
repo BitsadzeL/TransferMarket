@@ -35,14 +35,14 @@ module.exports = {
                 return res.status(400).json({ message: 'Player ID is required' });
             }
 
-            
+
             const footballer = await footballerModel.findById(playerID);
 
             if (!footballer) {
                 return res.status(404).json({ message: 'Footballer not found' });
             }
 
-            
+
             const statistics = await statisticsModel.findOne({ playerId: playerID });
 
 
@@ -56,13 +56,21 @@ module.exports = {
             console.error('Error finding statistics:', error);
             res.status(500).json({ error: 'Server error' });
         }
+    },
+
+
+
+    updateStatsById: async (req, res) => {
+        try {
+            const item = await statisticsModel.findOneAndUpdate(
+                { playerId: req.params.id },
+                { $set: req.body },
+                { new: true }
+            );
+            res.json(item);
+        } catch (error) {
+            res.status(500).json(error);
+        }
     }
-
-
-
-
-
-
-
 
 }
