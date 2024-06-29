@@ -1,1 +1,1 @@
-Project by Luka Butsadze and Giorgi Bitsadze
+Project by Luka Bitsadze and Giorgi Bitsadze
